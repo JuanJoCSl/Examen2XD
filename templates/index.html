@@ -12,11 +12,12 @@
                     <div class="card mb-4 shadow-sm">
                         <div class="card-body">
                             <h2 class="card-title">{{ post['title'] }}</h2>
+                            <p class="card-text">{{ post['content'] }}</p>
                             <div class="card-subtitle mb-2 text-muted">
                                 <i class="bi bi-person-circle"></i> Por <strong>{{ post['username'] }}</strong> 
                                 <i class="bi bi-calendar ms-2"></i> {{ post['created_at'] }}
                             </div>
-                            <p class="card-text">{{ post['content'] }}</p>
+                            
                         </div>
                     </div>
                 {% endfor %}
