@@ -1,0 +1,91 @@
+{% extends 'layout.html' %}
+
+{% block title %}Dashboard - Blog Flask{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>Dashboard</h1>
+                <a href="{{ url_for('create') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Crear nueva publicación
+                </a>
+            </div>
+            
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h2 class="mb-0">Mis publicaciones</h2>
+                </div>
+                <div class="card-body">
+                    {% if posts %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Fecha</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for post in posts %}
+                                        <tr>
+                                            <td>{{ post['title'] }}</td>
+                                            <td>{{ post['created_at'] }}</td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a href="{{ url_for('edit', id=post['id']) }}" class="btn btn-sm btn-outline-warning">
+                                                        <i class="bi bi-pencil"></i> Editar
+                                                    </a>
+                                                    <form action="{{ url_for('delete', id=post['id']) }}" method="post" class="d-inline">
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta publicación?')">
+                                                            <i class="bi bi-trash"></i> Eliminar
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> No has creado ninguna publicación aún.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h3 class="mb-0">Contenido de las publicaciones</h3>
+                </div>
+                <div class="card-body">
+                    {% if posts %}
+                        <div class="accordion" id="postsAccordion">
+                            {% for post in posts %}
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#post{{ post['id'] }}" aria-expanded="false" aria-controls="post{{ post['id'] }}">
+                                            {{ post['title'] }}
+                                        </button>
+                                    </h2>
+                                    <div id="post{{ post['id'] }}" class="accordion-collapse collapse" data-bs-parent="#postsAccordion">
+                                        <div class="accordion-body">
+                                            {{ post['content'] }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> No has creado ninguna publicación aún.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
